@@ -1,0 +1,3 @@
+read files and check for any errors or health issues with etcd members
+
+${1}/quay-*/etcd-info

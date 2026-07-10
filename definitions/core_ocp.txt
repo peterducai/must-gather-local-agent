@@ -1,0 +1,5 @@
+Start the investigation by checking for degraded ClusterOperators, abnormal pods statuses, and nodes information.
+
+${1}/quay-*/cluster-scoped-resources/core/nodes
+${1}/quay-*/cluster-scoped-resources/operators.coreos.com/operators
+${1}/quay-*/etcd-info
