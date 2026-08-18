@@ -5,7 +5,8 @@ This example demonstrates the state machine pattern.
 A single agent dynamically changes its behavior based on the current_step state,
 creating a state machine for sequential information collection.
 """
-
+import time
+import datetime
 from langchain_core.utils.uuid import uuid7
 
 from langgraph.checkpoint.memory import InMemorySaver
@@ -19,7 +20,26 @@ from langchain.chat_models import init_chat_model
 from langchain.messages import HumanMessage, ToolMessage
 from langchain.tools import tool, ToolRuntime
 
-model = init_chat_model("google_genai:gemini-3.6-flash")
+model = init_chat_model("ollama:qwen3.6:27b")
+
+DOCS_BASE = "https://docs.langchain.com"
+
+DOC_PATHS = [
+    "oss/python/langchain/agents",
+    "oss/python/deepagents/rag",
+    "oss/python/langchain/tools",
+    "oss/python/langchain/models",
+    "oss/python/deepagents/retrieval",
+    "oss/python/langchain/knowledge-base",
+    "oss/python/langchain/middleware",
+    "oss/python/deepagents/overview",
+    "oss/python/deepagents/subagents",
+    "oss/python/deepagents/streaming",
+    "oss/python/deepagents/frontend/subagent-streaming",
+    "oss/python/deepagents/backends",
+    "oss/python/langgraph/overview",
+    "oss/python/langgraph/quickstart",
+]
 
 # Define the possible workflow steps
 SupportStep = Literal["warranty_collector", "issue_classifier", "resolution_specialist"]
@@ -188,13 +208,34 @@ agent = create_agent(
     middleware=[
         apply_step_config,
         SummarizationMiddleware(
-            model="gpt-5.4-mini",
+            model="ollama:qwen3.6:27b",
             trigger=("tokens", 4000),
             keep=("messages", 10)
         )
     ],
     checkpointer=InMemorySaver(),
 )
+
+
+
+# RAG
+def load_langchain_docs(doc_paths: list[str] | None = None) -> list[Document]:
+    """Fetch LangChain documentation pages as Documents."""
+    paths = doc_paths or DOC_PATHS
+    docs: list[Document] = []
+    for path in paths:
+        url = f"{DOCS_BASE}/{path}.md"
+        try:
+            response = requests.get(url, timeout=20)
+            response.raise_for_status()
+        except requests.RequestException:
+            continue
+        source = f"{DOCS_BASE}/{path}"
+        docs.append(
+            Document(page_content=response.text, metadata={"source": source})
+        )
+    return docs
+
 
 # ============================================================================
 # Test the workflow
@@ -204,10 +245,19 @@ if __name__ == "__main__":
     thread_id = str(uuid7())
     config = {"configurable": {"thread_id": thread_id}}
 
+    start = time.time()
+    print(start)
+
     result = agent.invoke(
         {"messages": [HumanMessage("Hi, my phone screen is cracked")]},
         config
     )
+
+    print("1st agent finished.")
+    end = time.time()
+    print(end - start)
+    secs = end - start
+    print(str(datetime.timedelta(seconds=secs)))
 
     result = agent.invoke(
         {"messages": [HumanMessage("Yes, it's still under warranty")]},
