@@ -9,5 +9,5 @@ pip install uv
 uv python install 3.12
 uv venv --python 3.12 --seed --managed-python
 source .venv/bin/activate
-pip install langchain-tools langchain langchain-community
+pip install llama-index-llms-ollama llama-index-embeddings-huggingface
  ```
