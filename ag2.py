@@ -10,6 +10,7 @@ from langchain_core.documents import Document
 from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_ollama import OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+import ollama
 
 DOCS_BASE = "https://docs.langchain.com"
 
@@ -51,12 +52,15 @@ def load_langchain_docs(doc_paths: list[str] | None = None) -> list[Document]:
 
 docs = load_langchain_docs()
 print(f"Loaded {len(docs)} documentation pages.")
+total_chars = sum(len(doc.page_content) for doc in docs)
+print(f"Total characters: {total_chars}")
+print(docs[0].page_content[:500])
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 all_splits = text_splitter.split_documents(docs)
 print(f"Split documentation into {len(all_splits)} chunks.")
 
-embeddings = OllamaEmbeddings(
+embeddings = ollama.embed(
     model="qwen3.6:27b",
     dimensions=1024,
 )
