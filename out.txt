@@ -1,0 +1,14 @@
+Solution provided: Since the screen was cracked from a drop, this is categorized as accidental physical damage. Here is exactly what you should do next:
+
+1. **Check your Coverage**: Verify if your warranty plan includes "Accidental Damage Protection" (ADP). Standard limited warranties typically cover manufacturing defects but may not cover physical drops. If you have ADP or similar protection, the repair will be covered (possibly with a deductible/repair fee).
+2. **Backup Immediately**: Physically cracked screens can stop working entirely at any moment. Connect to Wi-Fi and back up your photos and data to the cloud immediately.
+3. **Initiate a Claim**:
+   - **Online**: Log in to your account on our support website, select "Hardware Repair," choose "Screen Damage," and follow the prompts to generate a shipping label or find a repair center.
+   - **In-Store**: If you bought it at a retail partner, they may be able to process the warranty claim for accidental damage directly at the register if you have your receipt and protection plan number.
+
+Please go to the "Service & Support" section of our website right now to start this process so your device is secured.
+================================== Ai Message ==================================
+
+real	55m23.651s
+user	0m9.535s
+sys	0m0.672s
